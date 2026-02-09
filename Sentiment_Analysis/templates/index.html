@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentiment Analysis App</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <div class="background-animation"></div>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-brain"></i> Sentiment AI</h1>
+            <p>Analyze the emotion behind your text with advanced NLP.</p>
+        </header>
+
+        <main>
+            <div class="input-section">
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="text-input">Text Input</button>
+                    <button class="tab-btn" data-tab="file-upload">File Upload</button>
+                </div>
+
+                <div class="tab-content active" id="text-input">
+                    <textarea id="textPayload" placeholder="Type or paste your text here..." rows="6"></textarea>
+                </div>
+
+                <div class="tab-content" id="file-upload">
+                    <div class="file-drop-area" id="dropArea">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Drag & Drop your .txt file here</p>
+                        <p>or</p>
+                        <button class="upload-btn" onclick="document.getElementById('filePayload').click()">Browse
+                            Files</button>
+                        <input type="file" id="filePayload" accept=".txt" hidden>
+                        <p id="fileName" class="file-name"></p>
+                    </div>
+                </div>
+
+                <button id="analyzeBtn" class="analyze-btn">Analyze Sentiment</button>
+            </div>
+
+            <div id="loading" class="hidden">
+                <div class="spinner"></div>
+                <p>Analyzing...</p>
+            </div>
+
+            <div id="result" class="result-section hidden">
+                <h2>Analysis Result</h2>
+                <div class="sentiment-badge" id="sentimentLabel">Positive</div>
+
+                <div class="scores-container">
+                    <div class="score-item">
+                        <span class="label">Positive</span>
+                        <div class="bar-container">
+                            <div class="bar pos" id="barPos" style="width: 0%"></div>
+                        </div>
+                        <span class="value" id="valPos">0.0</span>
+                    </div>
+                    <div class="score-item">
+                        <span class="label">Neutral</span>
+                        <div class="bar-container">
+                            <div class="bar neu" id="barNeu" style="width: 0%"></div>
+                        </div>
+                        <span class="value" id="valNeu">0.0</span>
+                    </div>
+                    <div class="score-item">
+                        <span class="label">Negative</span>
+                        <div class="bar-container">
+                            <div class="bar neg" id="barNeg" style="width: 0%"></div>
+                        </div>
+                        <span class="value" id="valNeg">0.0</span>
+                    </div>
+                    <div class="score-item">
+                        <span class="label">Compound</span>
+                        <div class="bar-container">
+                            <div class="bar compound" id="barCompound" style="width: 0%"></div>
+                        </div>
+                        <span class="value" id="valCompound">0.0</span>
+                    </div>
+                </div>
+
+                <div class="preprocessed-box">
+                    <h3>Preprocessed Text</h3>
+                    <p id="preprocessedText"></p>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+
+</html>
