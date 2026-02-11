@@ -104,6 +104,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    let sentimentChart;
+
     function displayResults(data) {
         resultSection.classList.remove('hidden');
 
@@ -112,33 +114,73 @@ document.addEventListener('DOMContentLoaded', () => {
         labelEl.textContent = data.label;
         labelEl.className = `sentiment-badge ${data.label}`;
 
-        // Update Scores and Bars
-        updateBar('Pos', data.pos);
-        updateBar('Neu', data.neu);
-        updateBar('Neg', data.neg);
-        updateBar('Compound', data.compound, true);
+        // Render Chart
+        updateChart(data);
+
+        // Render Highlights
+        const highlightBox = document.getElementById('highlightedText');
+        highlightBox.innerHTML = data.highlighted_tokens.map(token => {
+            const className = token.category !== 'neutral' ? `highlight-token highlight-${token.category}` : '';
+            return `<span class="${className}" title="Score: ${token.score}">${token.word}</span>`;
+        }).join(' ');
+
+        // Render Word Stats
+        const statsList = document.getElementById('wordStatsList');
+        statsList.innerHTML = data.word_stats.map(([word, count]) => {
+            return `<li>
+                <span class="word">${word}</span>
+                <span class="word-count">${count}</span>
+            </li>`;
+        }).join('');
 
         // Preprocessed Text
         document.getElementById('preprocessedText').textContent = data.preprocessed_text;
     }
 
-    function updateBar(type, value, isCompound = false) {
-        const bar = document.getElementById(`bar${type}`);
-        const val = document.getElementById(`val${type}`);
+    function updateChart(data) {
+        const ctx = document.getElementById('sentimentChart').getContext('2d');
         
-        let percentage;
-        if (isCompound) {
-            // Compound is -1 to 1. Map to 0-100% for display roughly, 
-            // or just absolute value? 
-            // Let's normalize (-1 to 1) -> (0 to 100) for width? 
-            // Better: just show it as full width if it's 1. 
-            // Design choice: maybe just width = abs(value) * 100?
-            percentage = Math.abs(value) * 100;
-        } else {
-            percentage = value * 100;
+        if (sentimentChart) {
+            sentimentChart.destroy();
         }
-        
-        bar.style.width = `${percentage}%`;
-        val.textContent = value.toFixed(3);
+
+        sentimentChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Positive', 'Neutral', 'Negative', 'Compound'],
+                datasets: [{
+                    label: 'Sentiment Score',
+                    data: [data.pos, data.neu, data.neg, data.compound],
+                    backgroundColor: [
+                        'rgba(40, 167, 69, 0.6)',  // Pos
+                        'rgba(108, 117, 125, 0.6)', // Neu
+                        'rgba(220, 53, 69, 0.6)',   // Neg
+                        'rgba(0, 210, 255, 0.6)'    // Compound
+                    ],
+                    borderColor: [
+                        'rgba(40, 167, 69, 1)',
+                        'rgba(108, 117, 125, 1)',
+                        'rgba(220, 53, 69, 1)',
+                        'rgba(0, 210, 255, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 1
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
     }
 });

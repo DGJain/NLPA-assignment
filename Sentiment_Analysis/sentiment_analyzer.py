@@ -49,15 +49,11 @@ def preprocess_text(text):
 def analyze_sentiment(text):
     """
     Analyzes sentiment using VADER.
-    Returns a dictionary with scores and a label.
+    Returns a dictionary with scores, label, word stats, and highlighted tokens.
     """
     sid = SentimentIntensityAnalyzer()
     
-    # VADER works best on raw text (handles caps, punctuation, emojis)
-    # But we can also look at the preprocessed text if needed.
-    # For the prompt requirements, we'll use the raw text for the actual score
-    # to ensure accuracy, but we'll return the preprocessed text to show we did it.
-    
+    # 1. Overall scores
     scores = sid.polarity_scores(text)
     
     # Determine label
@@ -69,13 +65,59 @@ def analyze_sentiment(text):
     else:
         label = 'Neutral'
         
+    # 2. Word Statistics (Frequency of repeated words)
+    # Use simple tokenization for counting
+    tokens = word_tokenize(text.lower())
+    # Filter out punctuation
+    words_only = [word for word in tokens if word not in string.punctuation]
+    stop_words = set(stopwords.words('english'))
+    # Filter out stopwords for "interesting" word counts, or keep them? 
+    # Valid requirement: "repeated words with their count". Usually implies meaningful words.
+    filtered_words = [word for word in words_only if word not in stop_words]
+    
+    from collections import Counter
+    word_counts = Counter(filtered_words)
+    # Get ALL words sorted by frequency
+    top_words = word_counts.most_common()
+    
+    # 3. Sentiment Highlighting
+    # We need to preserve original text structure for highlighting, or at least reconstruct it.
+    # VADER lexicon is case-sensitive for some things (like CAPS), but mostly lowercase.
+    # We will iterate through tokens and check their score in VADER lexicon.
+    
+    highlighted_text = []
+    # Use a tokenizer that keeps punctuation to reconstruct text better, or just split?
+    # NLTK word_tokenize is good.
+    # We need to map tokens back to sentiment.
+    
+    # Access VADER lexicon
+    lexicon = sid.lexicon
+    
+    for word in tokens:
+        lower_word = word.lower()
+        score = lexicon.get(lower_word, 0)
+        
+        category = 'neutral'
+        if score >= 0.05:
+            category = 'pos'
+        elif score <= -0.05:
+            category = 'neg'
+            
+        highlighted_text.append({
+            'word': word,
+            'category': category,
+            'score': score
+        })
+        
     result = {
         'compound': compound,
         'pos': scores['pos'],
         'neg': scores['neg'],
         'neu': scores['neu'],
         'label': label,
-        'preprocessed_text': preprocess_text(text) # Demonstrating the implementation
+        'preprocessed_text': preprocess_text(text),
+        'word_stats': top_words,
+        'highlighted_tokens': highlighted_text
     }
     
     return result
