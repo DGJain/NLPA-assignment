@@ -1,0 +1,54 @@
+Work Integrated Learning Programmes Division
+M.Tech. in AIML
+NLP Applications
+S1-25_AIMLCZG519
+Assignment 2 – PS-7
+General Instructions :
+1. The experiment is preferred to be conducted on the BITS OSHA Cloud Lab.
+2. Attach a screenshot of the OSHA Lab portal that displays the student’s credentials
+as proof of access and usage.
+3. No extension on the deadline
+4. Any queries regarding this problem statement should be addressed to Vasugi I,
+vasugii@wilp.bits-pilani.ac.in (Course LF)
+PART-A
+Task A : Problem Statement:
+Develop a simple application that can accurately analyze the sentiment (positive, negative,
+or neutral) of user-provided text. The application should leverage Natural Language
+Processing (NLP) techniques to extract the underlying sentiment from the text.
+Web Interface: (4 Marks)
+1. User Interface: Create an intuitive interface where users can input text or upload
+text files.
+2. Sentiment Display: Visualize the detected sentiment using a clear and
+understandable format (e.g., a bar chart, a color-coded label).
+Sentiment Analysis : (4 Marks)
+1. NLP Model Integration: Implement an NLP model (e.g., using libraries like NLTK,
+spaCy, or TensorFlow) capable of performing sentiment analysis.
+2. Text Preprocessing: Apply necessary preprocessing steps (e.g., tokenization, stemming,
+lemmatization) to prepare the text for analysis.
+3. Sentiment Prediction: Utilize the trained model to predict the sentiment of the input
+text.
+Task B : Enhancement Plan (2 Marks)
+Provide a detailed documentation that would explain the step – by- step process to enhance your
+Sentiment Analysis Application to develop and expose RESTful APIs that allow external
+applications to access the sentiment analysis engine
+PART – B
+Literature Survey (5 Marks)
+Conduct a literature survey on the following topic to gain insights into the current state of
+research.
+Topic : Sentiment Analysis in Opinion Mining
+Deliverables:
+PART - A
+●
+●
+●
+●
+A well-documented code (Python and frontend) for the knowledge graph application.
+Instructions for running the application locally.
+A brief report explaining the design choices and any challenges faced during
+implementation.
+A set screenshots that explains the entire flow of the application to be included in the
+report.
+Task-B to be submitted as a .pdf document.
+●
+PART – B
+A well-documented literature review to be presented as a .pdf document

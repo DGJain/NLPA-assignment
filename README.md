@@ -28,8 +28,14 @@ A web-based sentiment analysis tool built with **Flask** and **NLTK (VADER)**. A
 ├── static/
 │   ├── style.css          # Styles (dark theme)
 │   └── script.js          # Frontend logic, chart (Chart.js)
-├── api_development_guide.md
+├── api_development_guide.md   # Task B: Step-by-step RESTful API enhancement
 ├── implementation_plan.md
+├── DESIGN.md                  # Design choices and challenges (detailed)
+├── RUNNING.md                 # Instructions for running the app locally (Part A)
+├── ASSIGNMENT_REPORT.md       # Part A report: design choices, challenges, screenshots
+├── TASK_B_ENHANCEMENT_PLAN.md # Task B deliverable note (submit api_development_guide as PDF)
+├── LITERATURE_SURVEY.md       # Part B: Literature survey – Sentiment Analysis in Opinion Mining
+├── assigment.txt              # Assignment 2 problem statement
 └── README.md
 ```
 
@@ -84,7 +90,7 @@ A web-based sentiment analysis tool built with **Flask** and **NLTK (VADER)**. A
 
   Returns JSON with: `label`, `strength`, `summary`, `compound`, `pos`, `neg`, `neu`, `text_stats`, `score_descriptions`, `top_positive_words`, `top_negative_words`, `highlighted_tokens`, `word_stats`, `preprocessed_text`.
 
-See `api_development_guide.md` for more detail.
+See `api_development_guide.md` for more detail. For design rationale and challenges, see `DESIGN.md`.
 
 ## Running tests
 
