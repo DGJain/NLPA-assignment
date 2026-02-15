@@ -1,10 +1,14 @@
 # app.py
 # Main Flask application file for Sentiment Analysis
 # Routes: / (index), /analyze (prediction)
+import os
 from flask import Flask, render_template, request, jsonify
 from sentiment_analyzer import analyze_sentiment
 
-app = Flask(__name__)
+_here = os.path.dirname(os.path.abspath(__file__))
+app = Flask(__name__,
+    template_folder=os.path.join(_here, 'templates'),
+    static_folder=os.path.join(_here, 'static'))
 
 @app.route('/')
 def index():
@@ -37,4 +41,4 @@ def analyze():
     return jsonify(result)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=9000)

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentiment Analysis App</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <div class="background-animation"></div>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-brain"></i> Sentiment AI</h1>
+            <p>Analyze the emotion behind your text with advanced NLP.</p>
+        </header>
+
+        <main>
+            <div class="input-section">
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="text-input">Text Input</button>
+                    <button class="tab-btn" data-tab="file-upload">File Upload</button>
+                </div>
+
+                <div class="tab-content active" id="text-input">
+                    <textarea id="textPayload" placeholder="Type or paste your text here..." rows="6"></textarea>
+                </div>
+
+                <div class="tab-content" id="file-upload">
+                    <div class="file-drop-area" id="dropArea">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Drag & Drop your .txt file here</p>
+                        <p>or</p>
+                        <button class="upload-btn" onclick="document.getElementById('filePayload').click()">Browse
+                            Files</button>
+                        <input type="file" id="filePayload" accept=".txt" hidden>
+                        <p id="fileName" class="file-name"></p>
+                    </div>
+                </div>
+
+                <button id="analyzeBtn" class="analyze-btn">Analyze Sentiment</button>
+            </div>
+
+            <div id="loading" class="hidden">
+                <div class="spinner"></div>
+                <p>Analyzing...</p>
+            </div>
+
+            <div id="result" class="result-section hidden">
+                <h2>Analysis Result</h2>
+
+                <div class="summary-card">
+                    <div class="sentiment-badge" id="sentimentLabel">Positive</div>
+                    <p class="summary-text" id="summaryText"></p>
+                    <p class="clarity-line" id="clarityLine"><span class="clarity-label">Sentiment clarity:</span> <strong id="clarityValue">—</strong></p>
+                    <div class="text-stats" id="textStats">
+                        <span class="stat-item"><i class="fas fa-font"></i> <strong id="statWords">0</strong> words</span>
+                        <span class="stat-item"><i class="fas fa-align-left"></i> <strong id="statSentences">0</strong> sentences</span>
+                        <span class="stat-item"><i class="fas fa-text-width"></i> <strong id="statChars">0</strong> characters</span>
+                    </div>
+                </div>
+
+                <div class="score-breakdown">
+                    <h3>Score breakdown <span class="info-hint" title="Hover over a score for explanation">ⓘ</span></h3>
+                    <div class="score-cards">
+                        <div class="score-card" data-score="pos" title="">
+                            <span class="score-label">Positive</span>
+                            <span class="score-value" id="scorePos">0</span>
+                        </div>
+                        <div class="score-card" data-score="neu" title="">
+                            <span class="score-label">Neutral</span>
+                            <span class="score-value" id="scoreNeu">0</span>
+                        </div>
+                        <div class="score-card" data-score="neg" title="">
+                            <span class="score-label">Negative</span>
+                            <span class="score-value" id="scoreNeg">0</span>
+                        </div>
+                        <div class="score-card score-card-compound" data-score="compound" title="">
+                            <span class="score-label">Compound</span>
+                            <span class="score-value" id="scoreCompound">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="charts-row">
+                    <div class="chart-container">
+                        <canvas id="sentimentChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="sentence-breakdown" id="sentenceBreakdown">
+                    <h3><i class="fas fa-list-ol"></i> Sentence-by-sentence analysis</h3>
+                    <p class="sentence-breakdown-desc">Each sentence is scored separately. Pos / Neu / Neg are proportions; compound is overall (−1 to +1).</p>
+                    <ul id="sentenceList"></ul>
+                </div>
+
+                <div class="driving-words-row">
+                    <div class="driving-words-box driving-words-positive">
+                        <h3><i class="fas fa-smile"></i> Positive words in text</h3>
+                        <ul id="topPositiveList"></ul>
+                    </div>
+                    <div class="driving-words-box driving-words-negative">
+                        <h3><i class="fas fa-frown"></i> Negative words in text</h3>
+                        <ul id="topNegativeList"></ul>
+                    </div>
+                </div>
+
+                <div class="insights-row">
+                    <div class="highlight-box">
+                        <h3>Sentiment highlight (hover for score; negated words styled)</h3>
+                        <p id="highlightedText" class="highlight-content"></p>
+                    </div>
+
+                    <div class="stats-box">
+                        <h3>Top repeated words</h3>
+                        <ul id="wordStatsList"></ul>
+                    </div>
+                </div>
+
+                <div class="preprocessed-box">
+                    <h3>Preprocessed text</h3>
+                    <p id="preprocessedText"></p>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+
+</html>

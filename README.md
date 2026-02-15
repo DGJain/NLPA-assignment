@@ -1,80 +1,105 @@
-# Sentiment Analysis Project
+# Sentiment Analysis App
 
-This project is a web-based Sentiment Analysis tool built with Flask, NLTK, and Pandas. It allows users to input text or upload a file to analyze the sentiment (Positive, Negative, Neutral) and view word statistics.
+A web-based sentiment analysis tool built with **Flask** and **NLTK (VADER)**. Analyze text or upload a `.txt` file to get sentiment scores, word statistics, and highlighted sentiment cues.
 
-## Project Structure
+## Features
 
-- `Sentiment_Analysis/`: Main application directory.
-  - `app.py`: The main Flask application file.
-  - `sentiment_analyzer.py`: Contains the logic for sentiment analysis using NLTK VADER.
-  - `templates/`: HTML templates for the web interface.
-  - `static/`: Static files (CSS, JS).
-  - `requirements.txt`: List of Python dependencies.
+- **Text or file input** — Type/paste text or upload a UTF-8 `.txt` file
+- **Sentiment result** — Overall label (Positive / Negative / Neutral) with **strength** (Strong / Moderate / Weak)
+- **Summary** — One-line description of the result (e.g. *"The text is moderately positive."*)
+- **Text statistics** — Word count, sentence count, and character count
+- **Score breakdown** — Positive, Neutral, Negative, and Compound scores with hover tooltips explaining each
+- **Bar chart** — Visual comparison of the four scores
+- **Driving words** — Top positive and negative words found in the text (from VADER lexicon) with scores
+- **Highlighted text** — Inline highlighting of positive (green), negative (red), and neutral (gray) tokens; hover to see VADER score
+- **Top repeated words** — Frequency list of non-stopwords
+- **Preprocessed text** — Tokenized, stopwords-removed, lemmatized version of the input
+
+## Project structure
+
+```
+.
+├── app.py                 # Flask app (routes: /, /analyze)
+├── sentiment_analyzer.py   # NLTK VADER analysis, preprocessing, stats
+├── requirements.txt       # Python dependencies
+├── test_app.py            # Unit tests
+├── templates/
+│   └── index.html         # Single-page UI
+├── static/
+│   ├── style.css          # Styles (dark theme)
+│   └── script.js          # Frontend logic, chart (Chart.js)
+├── api_development_guide.md
+├── implementation_plan.md
+└── README.md
+```
 
 ## Prerequisites
 
-- Python 3.x installed on your system.
-- `pip` (Python package installer).
-- **Internet Connection:** Required to load FontAwesome icons and Chart.js from CDN.
+- **Python 3.x**
+- **pip**
+- **Internet** (first run may download NLTK data; UI uses CDN for Font Awesome and Chart.js)
 
 ## Installation
 
-1.  **Navigate to the project directory:**
-    Open your terminal or command prompt and change to the `Sentiment_Analysis` directory.
-    ```bash
-    cd "Sentiment_Analysis"
-    ```
+1. **Go to the project directory:**
+   ```bash
+   cd /path/to/NLPA-assignment
+   ```
 
-2.  **Create a virtual environment (Recommended):**
-    It is good practice to use a virtual environment to manage dependencies.
-    ```bash
-    python -m venv venv
-    ```
+2. **Create and activate a virtual environment (recommended):**
+   ```bash
+   python -m venv venv
+   ```
+   - **macOS/Linux:** `source venv/bin/activate`
+   - **Windows:** `venv\Scripts\activate`
 
-    - **Activate the virtual environment:**
-      - On **Windows**:
-        ```bash
-        venv\Scripts\activate
-        ```
-      - On **macOS/Linux**:
-        ```bash
-        source venv/bin/activate
-        ```
+3. **Install dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-3.  **Install dependencies:**
-    Install the required Python packages using `pip`.
-    ```bash
-    pip install -r requirements.txt
-    ```
+## Running the app
 
-## Running the Application
+1. **Start the server** (with venv activated):
+   ```bash
+   python app.py
+   ```
 
-1.  **Start the Flask server:**
-    Ensure you are in the `Sentiment_Analysis` directory and your virtual environment is activated (if used).
-    ```bash
-    python app.py
-    ```
-
-2.  **Access the application:**
-    Open your web browser and go to the URL displayed in the terminal, usually:
-    `http://127.0.0.1:5000/`
+2. **Open in browser:**  
+   **http://localhost:9000**
 
 ## Usage
 
-1.  **Enter Text:** Type or paste text into the input box on the homepage.
-2.  **Upload File:** Alternatively, upload a `.txt` file containing the text you want to analyze.
-3.  **Analyze:** Click the "Analyze Sentiment" button.
-4.  **View Results:**
-    - **Sentiment Score:** See the overall sentiment (Positive, Negative, Neutral).
-    - **Highlighted Text:** View the text with positive words highlighted in green and negative words in red.
-    - **Word Statistics:** See a frequency count of words used in the text.
+1. **Text:** Use the "Text Input" tab and type or paste your text.
+2. **File:** Use the "File Upload" tab and drag-and-drop or browse to select a `.txt` file (UTF-8).
+3. Click **Analyze Sentiment**.
+4. Review the summary, stats, score breakdown, chart, driving words, highlighted text, repeated words, and preprocessed text.
 
-## Running Tests
+## API
 
-To ensure the application is working correctly, you can run the provided unit tests.
+- **POST `/analyze`**  
+  Accepts:
+  - Form: `text=...` or `file=<file>`
+  - JSON: `{"text": "..."}`  
 
-1.  **Run the test suite:**
-    ```bash
-    python test_app.py
-    ```
-    This will execute the tests defined in `test_app.py` and report any failures.
+  Returns JSON with: `label`, `strength`, `summary`, `compound`, `pos`, `neg`, `neu`, `text_stats`, `score_descriptions`, `top_positive_words`, `top_negative_words`, `highlighted_tokens`, `word_stats`, `preprocessed_text`.
+
+See `api_development_guide.md` for more detail.
+
+## Running tests
+
+```bash
+python -m unittest test_app
+```
+
+or:
+
+```bash
+python test_app.py
+```
+
+## Tech stack
+
+- **Backend:** Flask, NLTK (VADER, tokenizers, stopwords, WordNet)
+- **Frontend:** Vanilla JS, Chart.js, Font Awesome
+- **Styling:** CSS (dark theme, responsive)
